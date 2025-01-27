@@ -55,3 +55,13 @@ php artisan serve
 npm run build
 npm run dev
 ```
+
+## 便利コマンド
+```bash
+php artisan make:model モデル名 -rfms
+```
+
+-rは「resource」で、生成されたコントローラをリソースコントローラにする
+-fは「factory」で。モデルの新しいファクトリを作成します。
+-mは「migration」で、モデルの新しいマイグレーションファイルを作成
+-sは「seed」で、モデルの新しいシーダを作成
