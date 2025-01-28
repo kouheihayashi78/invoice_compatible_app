@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use app\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ProductServiceInterface
 {
@@ -9,9 +10,9 @@ interface ProductServiceInterface
      * 商品一覧を取得
      *
      * @param array $search
-     * @return Product|null
+     * @return Collection|null
      */
-    public function index(array $search): ?Product;
+    public function index(array $search): ?Collection;
 
     /**
      * 商品登録

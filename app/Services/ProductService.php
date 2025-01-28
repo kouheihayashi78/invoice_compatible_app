@@ -1,23 +1,27 @@
 <?php
 namespace App\Services;
 
-use app\Models\Product;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductService implements ProductServiceInterface
 {
-    public function __construct()
-    {
+    protected Product $product;
 
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
     }
 
     /**
      * 商品一覧を取得
      *
      * @param array $search
-     * @return Product|null
+     * @return Collection|null
      */
-    public function index(array $search): ?Product
+    public function index(array $search): ?Collection
     {
+        return $this->product::get();
     }
 
     /**
