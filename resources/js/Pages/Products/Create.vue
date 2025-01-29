@@ -8,21 +8,8 @@ import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
+import { taxList } from '@/const/tax';
 
-const taxList = [
-    {
-        id: 1,
-        name: '10%'
-    },
-    {
-        id: 8,
-        name: '8%'
-    },
-    {
-        id: 0,
-        name: '非課税'
-    }
-];
 
 const form = useForm({
     name: "",
@@ -56,7 +43,7 @@ const submit = () => {
             </div>
 
             <div class="m-3 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="name" value="Name" />
