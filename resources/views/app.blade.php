@@ -13,9 +13,12 @@
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        <!-- inertiaを使用する上で必要なメタデータやリンクなどを動的に挿入するタグ -->
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <!-- フロントエンドのエントリポイント作成のタグ、アプリのメインjs(app.jsなど)が読み込まれ実行される -->
+        <!-- つまりPagesディレクトリで作成したvueファイルをimportしたapp.jsの内容をここで表示することができる -->
         @inertia
     </body>
 </html>

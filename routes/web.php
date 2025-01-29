@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::post('/', [ProductController::class, 'create'])->name('create');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
     });
 });
 
