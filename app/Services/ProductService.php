@@ -27,11 +27,19 @@ class ProductService implements ProductServiceInterface
     /**
      * 商品登録
      *
-     * @param array $productRecord
-     * @return Product
+     * @param array $productInfo
+     * @return void
      */
-    public function create(array $productRecord): Product
+    public function create(array $productInfo): void
     {
+        $product = new Product($productInfo);
+        $product->fill([
+            'product_name' => $productInfo['name'],
+            'product_code' => $productInfo['code'],
+            'product_price' => $productInfo['price'],
+            'product_tax' => $productInfo['tax']
+        ])->save();
+
     }
 
     /**

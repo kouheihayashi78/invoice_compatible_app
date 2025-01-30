@@ -17,10 +17,10 @@ interface ProductServiceInterface
     /**
      * 商品登録
      *
-     * @param array $productRecord
-     * @return Product
+     * @param array $productInfo
+     * @return void
      */
-    public function create(array $productRecord): Product;
+    public function create(array $productInfo): void;
 
     /**
      * 商品編集
