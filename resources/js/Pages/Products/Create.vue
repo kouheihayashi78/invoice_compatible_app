@@ -8,7 +8,7 @@ import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
-import { taxList } from '@/const/tax';
+import { taxList } from '@/const/Tax';
 
 
 const form = useForm({
@@ -19,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("register"), {
+    form.post(route("product.store"), {
         // onFinishだとバリデーション発生時もリセットされてしまうのでOnSuccess
         onSuccess: () => form.reset("name", "code", "price", "tax"),
     });
@@ -46,7 +46,7 @@ const submit = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
                     <form @submit.prevent="submit">
                         <div class="mt-4">
-                            <InputLabel for="name" value="Name" />
+                            <InputLabel for="name" value="商品名" />
 
                             <TextInput
                                 id="name"
@@ -65,7 +65,7 @@ const submit = () => {
                         </div>
 
                         <div class="mt-4">
-                            <InputLabel for="code" value="Code" />
+                            <InputLabel for="code" value="商品コード" />
 
                             <TextInput
                                 id="code"
@@ -83,7 +83,7 @@ const submit = () => {
                         </div>
 
                         <div class="mt-4">
-                            <InputLabel for="price" value="Price" />
+                            <InputLabel for="price" value="商品価格" />
 
                             <TextInput
                                 id="price"
@@ -101,7 +101,7 @@ const submit = () => {
                         </div>
 
                         <div class="mt-4">
-                            <InputLabel for="tax" value="Tax" />
+                            <InputLabel for="tax" value="税率" />
 
                             <SelectInput
                                 :options="taxList"
