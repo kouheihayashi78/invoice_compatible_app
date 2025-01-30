@@ -95,7 +95,7 @@ return [
     'max' => [
         'array' => 'The :attribute field must not have more than :max items.',
         'file' => 'The :attribute field must not be greater than :max kilobytes.',
-        'numeric' => 'The :attribute field must not be greater than :max.',
+        'numeric' => ':attributeは:max以内で入力して下さい。',
         'string' => ':attributeは:max文字以内で入力して下さい。',
     ],
     'max_digits' => 'The :attribute field must not have more than :max digits.',
@@ -104,7 +104,7 @@ return [
     'min' => [
         'array' => 'The :attribute field must have at least :min items.',
         'file' => 'The :attribute field must be at least :min kilobytes.',
-        'numeric' => 'The :attribute field must be at least :min.',
+        'numeric' => ':attributeは:min以上で入力して下さい。',
         'string' => ':attributeは:min文字以上で入力して下さい。',
     ],
     'min_digits' => 'The :attribute field must have at least :min digits.',
