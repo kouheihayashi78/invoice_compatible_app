@@ -11,7 +11,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // 配列にルールを指定するか、ルールを|で区切るかは公式を見る限り多分自由
+            "name" => ['required', 'string', 'min:2', 'max:15'],
+            "code" => ['required', 'string', 'min:4', 'max:4', 'unique:products,product_code'],
+            "price" => ['required', 'integer', 'min:100', 'max:100000'],
+            "tax" => ['required', 'integer']
         ];
     }
 }
