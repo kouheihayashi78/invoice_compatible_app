@@ -1,11 +1,23 @@
 <script setup>
+import DangerButton from '@/Components/DangerButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 // 下記の書き方でcontrollerから渡された変数をvueファイルの中で扱うことができる
 const props = defineProps({
     productList: {type: Object}
 });
+
+const form = useForm({
+    id: '',
+});
+
+const deleteProduct = (id, name) => {
+    if(confirm(name + 'を削除してもよろしいでしょうか')){
+        form.delete(route('product.destroy', id));
+    }
+}
+
 </script>
 
 <template>
@@ -17,18 +29,12 @@ const props = defineProps({
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">商品一覧</div>
-                </div>
-            </div>
-
             <div class="m-3 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
                     <div class="mt-3 mb-3 ml-3 flex">
                         <!-- Linkタグを使うことでaタグと違ってページ全体を再読み込みせずにリンクを処理できる -->
-                        <Link :href="route('product.create')" :class="'px-4 py-2 bg-indigo-500 text-white border rounded-md font-semibold text-xs'" >
-                            <i class="fa-solid fa-plus-circle"></i> 商品登録
+                        <Link :href="route('product.create')" :class="'flex justify-center items-center px-4 py-2 mr-3 bg-indigo-500 text-white border rounded-md font-semibold text-xs'" >
+                            <i class="fa-solid fa-plus-circle mr-1"></i> 商品登録
                         </Link>
                     </div>
                     <table class="table-auto border border-gray-400 w-10/12 m-3">
@@ -58,6 +64,11 @@ const props = defineProps({
                                     </Link>
                                 </td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
+                                    <DangerButton
+                                        @click="deleteProduct(product.product_id, product.product_name)"
+                                        :class="'border rounded-md bg-red-400 text-white text-xs px-4 py-2'">
+                                            <i class="fa-solid fa-trash"></i>
+                                    </DangerButton>
                                 </td>
                             </tr>
                         </tbody>
