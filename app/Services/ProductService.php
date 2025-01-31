@@ -16,12 +16,11 @@ class ProductService implements ProductServiceInterface
     /**
      * 商品一覧を取得
      *
-     * @param array $search
      * @return Collection|null
      */
-    public function index(array $search): ?Collection
+    public function index(): ?Collection
     {
-        return $this->product::get();
+        return $this->product->get();
     }
 
     /**
@@ -68,5 +67,21 @@ class ProductService implements ProductServiceInterface
     public function delete(Product $product): void
     {
         $product->delete();
+    }
+
+    /**
+     * 商品検索
+     *
+     * @param string|null $search_str
+     * @return Collection|null
+     */
+    public function search(string|null $search_str): ?Collection
+    {
+        $result = $this->product->where('product_name', 'LIKE', '%'.$search_str.'%')
+            ->orWhere('product_code', 'LIKE', '%'.$search_str.'%')
+            ->orWhere('product_price', '=', $search_str)
+            ->orWhere('product_tax', '=', $search_str)
+            ->get();
+        return $result;
     }
 }

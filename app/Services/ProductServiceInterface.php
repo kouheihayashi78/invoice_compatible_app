@@ -9,10 +9,9 @@ interface ProductServiceInterface
     /**
      * 商品一覧を取得
      *
-     * @param array $search
      * @return Collection|null
      */
-    public function index(array $search): ?Collection;
+    public function index(): ?Collection;
 
     /**
      * 商品登録
@@ -36,5 +35,13 @@ interface ProductServiceInterface
      * @param Product $product
      */
     public function delete(Product $product): void;
+
+    /**
+     * 商品検索
+     *
+     * @param string|null $search_str
+     * @return Collection|null
+     */
+    public function search(string|null $search_str): ?Collection;
 
 }
