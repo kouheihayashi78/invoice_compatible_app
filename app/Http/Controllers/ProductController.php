@@ -52,19 +52,23 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Modelを指定するこのやり方はルートモデルバインディング
+     * routeの/{product} の部分が $productにバインドされるので、ここは合わせる
+     * LaravelがProductのproduct_idに対応するレコードを取得し、$productに該当レコードのインスタンスを渡してくれる
+     * わざわざinputで取り出してModelから取得する記述をしないでいいので、シンプル！！！
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('Products/Edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $this->productService->update($product, $request->validated());
+        return redirect()->route('product.index');
     }
 
     /**
