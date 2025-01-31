@@ -2,14 +2,17 @@
 import DangerButton from '@/Components/DangerButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import TextInput from '@/Components/TextInput.vue';
 
 // 下記の書き方でcontrollerから渡された変数をvueファイルの中で扱うことができる
 const props = defineProps({
-    productList: {type: Object}
+    productList: {type: Object},
+    search_str: String
 });
 
 const form = useForm({
     id: '',
+    search_str: props.search_str || ''
 });
 
 const deleteProduct = (id, name) => {
@@ -18,6 +21,10 @@ const deleteProduct = (id, name) => {
     }
 }
 
+// 検索バーがフォーカスを失ったら発火
+const search_go = () => {
+    form.get(route('product.index'));
+}
 </script>
 
 <template>
@@ -36,8 +43,21 @@ const deleteProduct = (id, name) => {
                         <Link :href="route('product.create')" :class="'flex justify-center items-center px-4 py-2 mr-3 bg-indigo-500 text-white border rounded-md font-semibold text-xs'" >
                             <i class="fa-solid fa-plus-circle mr-1"></i> 商品登録
                         </Link>
+                        <div>
+                            <TextInput
+                                id="search_str"
+                                type="text"
+                                class="block w-full"
+                                v-model="form.search_str"
+                                autocomplete="search_str"
+                                placeholder="検索"
+                                @blur="search_go"
+                            />
+                        </div>
                     </div>
-                    <table class="table-auto border border-gray-400 w-10/12 m-3">
+
+                    <span v-if="props.productList.length===0" class="m-2">該当する商品はありません。</span>
+                    <table v-else class="table-auto border border-gray-400 w-10/12 m-3">
                         <thead>
                             <tr class="bg-gray-100">
                                 <th class="px-4 py-2 w-12">ID</th>
