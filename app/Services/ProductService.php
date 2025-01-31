@@ -63,11 +63,10 @@ class ProductService implements ProductServiceInterface
      * 商品削除
      *
      * @param Product $product
-     * @param integer $productId
      * @return void
      */
-    public function delete(Product $product, int $productId): void
+    public function delete(Product $product): void
     {
-
+        $product->delete();
     }
 }

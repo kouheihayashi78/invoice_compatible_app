@@ -34,8 +34,7 @@ interface ProductServiceInterface
      * 商品削除
      *
      * @param Product $product
-     * @param int $productId
      */
-    public function delete(Product $product, int $productId): void;
+    public function delete(Product $product): void;
 
 }
