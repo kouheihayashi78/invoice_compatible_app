@@ -21,8 +21,14 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $productList = $this->productService->index($request->all());
-        return Inertia::render('Products/Index', compact('productList'));
+        $search_str = null;
+        if(empty($request->input('search_str'))) {
+            $productList = $this->productService->index();
+        } else {
+            $search_str = $request->input('search_str');
+            $productList = $this->productService->search($search_str);
+        }
+        return Inertia::render('Products/Index', compact('productList', 'search_str'));
     }
 
     /**
