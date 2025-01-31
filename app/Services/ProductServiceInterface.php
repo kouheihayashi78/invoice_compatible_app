@@ -28,7 +28,7 @@ interface ProductServiceInterface
      * @param Product $product
      * @param array $productRecord
      */
-    public function edit(Product $product, array $productRecord): void;
+    public function update($product, array $productRecord): void;
 
     /**
      * 商品削除

@@ -49,9 +49,14 @@ class ProductService implements ProductServiceInterface
      * @param array $productRecord
      * @return void
      */
-    public function edit(Product $product, array $productRecord): void
+    public function update($product, array $productRecord): void
     {
-
+        $product->update([
+            'product_name' => $productRecord['name'],
+            'product_code' => $productRecord['code'],
+            'product_price' => $productRecord['price'],
+            'product_tax' => $productRecord['tax'],
+        ]);
     }
 
     /**
