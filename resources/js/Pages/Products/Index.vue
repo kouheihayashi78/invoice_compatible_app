@@ -44,13 +44,18 @@ const props = defineProps({
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="product in productList" :key="product.id">
+                            <tr v-for="product in productList" :key="product.product_id">
                                 <td class="border border-gray-400 px-4 py-2 text-center">{{ product.product_id }}</td>
                                 <td class="border border-gray-400 px-4 py-2">{{ product.product_name }}</td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">{{ product.product_code }}</td>
                                 <td class="border border-gray-400 px-4 py-2 text-right">{{ product.product_price }}</td>
                                 <td class="border border-gray-400 px-4 py-2 text-right">{{ product.product_tax }}%</td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
+                                    <Link
+                                        :href="route('product.edit', product.product_id)"
+                                        :class="'border rounded-md bg-blue-400 text-white text-xs px-4 py-2'">
+                                            <i class="fa-solid fa-edit"></i>
+                                    </Link>
                                 </td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
                                 </td>

@@ -31,13 +31,25 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                                class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    ダッシュボード
+                                </NavLink>
+                                <NavLink
+                                    :href="route('product.index')"
+                                    :active="route().current('product.index')"
+                                >
+                                    商品一覧
+                                </NavLink>
+                                <NavLink
+                                    :href="route('product.create')"
+                                    :active="route().current('product.create')"
+                                >
+                                    商品登録
                                 </NavLink>
                             </div>
                         </div>
@@ -144,7 +156,19 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            ダッシュボード
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('product.index')"
+                            :active="route().current('product.index')"
+                        >
+                            商品一覧
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('product.create')"
+                            :active="route().current('product.create')"
+                        >
+                            商品登録
                         </ResponsiveNavLink>
                     </div>
 
