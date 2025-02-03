@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService implements ProductServiceInterface
 {
@@ -16,11 +17,11 @@ class ProductService implements ProductServiceInterface
     /**
      * 商品一覧を取得
      *
-     * @return Collection|null
+     * @return LengthAwarePaginator|null
      */
-    public function index(): ?Collection
+    public function index(): ?LengthAwarePaginator
     {
-        return $this->product->get();
+        return $this->product->paginate(5);
     }
 
     /**
@@ -73,15 +74,15 @@ class ProductService implements ProductServiceInterface
      * 商品検索
      *
      * @param string|null $search_str
-     * @return Collection|null
+     * @return LengthAwarePaginator|null
      */
-    public function search(string|null $search_str): ?Collection
+    public function search(string|null $search_str): ?LengthAwarePaginator
     {
         $result = $this->product->where('product_name', 'LIKE', '%'.$search_str.'%')
             ->orWhere('product_code', 'LIKE', '%'.$search_str.'%')
             ->orWhere('product_price', '=', $search_str)
             ->orWhere('product_tax', '=', $search_str)
-            ->get();
+            ->paginate(5);
         return $result;
     }
 }

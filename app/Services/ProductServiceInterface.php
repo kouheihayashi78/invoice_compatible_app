@@ -3,15 +3,16 @@ namespace App\Services;
 
 use app\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductServiceInterface
 {
     /**
      * 商品一覧を取得
      *
-     * @return Collection|null
+     * @return LengthAwarePaginator|null
      */
-    public function index(): ?Collection;
+    public function index(): ?LengthAwarePaginator;
 
     /**
      * 商品登録
@@ -40,8 +41,8 @@ interface ProductServiceInterface
      * 商品検索
      *
      * @param string|null $search_str
-     * @return Collection|null
+     * @return LengthAwarePaginator|null
      */
-    public function search(string|null $search_str): ?Collection;
+    public function search(string|null $search_str): ?LengthAwarePaginator;
 
 }
