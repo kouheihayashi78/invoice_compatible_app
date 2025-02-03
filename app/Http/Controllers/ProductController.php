@@ -46,7 +46,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $this->productService->create($data);
-        return redirect()->route('product.index');
+        return redirect()->route('product.index')->with('success', '登録が完了しました。');
     }
 
     /**
@@ -74,7 +74,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
         $this->productService->update($product, $request->validated());
-        return redirect()->route('product.index');
+        return redirect()->route('product.index')->with('success', '編集が完了しました。');
     }
 
     /**
