@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -7,7 +8,23 @@ import TextInput from '@/Components/TextInput.vue';
 // 下記の書き方でcontrollerから渡された変数をvueファイルの中で扱うことができる
 const props = defineProps({
     productList: {type: Object},
-    search_str: String
+    search_str: String,
+    success: String
+});
+
+// フラッシュメッセージをリアクティブな変数として定義して監視
+const successMessage = ref(props.success);
+
+// 3秒後にメッセージを消す
+watch(successMessage, (newVal) => {
+    if (newVal) {
+        setTimeout(() => {
+            successMessage.value = '';
+        }, 3000);
+    }
+}, {
+    // 初期呼び出し
+    immediate: true
 });
 
 const form = useForm({
@@ -37,6 +54,12 @@ const search_go = () => {
 
         <div class="py-12">
             <div class="m-3 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <!-- トーストメッセージ表示 -->
+                <transition name="fade">
+                        <div v-if="successMessage" class="alert alert-success m-2 mb-4 bg-green-100 p-3 rounded shadow-md">
+                            {{ successMessage }}
+                        </div>
+                    </transition>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
                     <div class="mt-3 mb-3 ml-3 flex">
                         <!-- Linkタグを使うことでaタグと違ってページ全体を再読み込みせずにリンクを処理できる -->
@@ -98,4 +121,12 @@ const search_go = () => {
         </div>
     </AuthenticatedLayout>
 </template>
-
+<style>
+    /* フェードアウトアニメーション */
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.5s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
+</style>
