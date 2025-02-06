@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update/{product}', [ProductController::class, 'update'])->name('update');
         Route::delete('/delete/{product}', [ProductController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('order')->name('order.')->group(function () {
+        Route::get('/', [OrderController::class]);
     });
 });
 

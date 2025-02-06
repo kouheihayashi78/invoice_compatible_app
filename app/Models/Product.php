@@ -18,4 +18,19 @@ class Product extends Model
         'product_price',
         'product_tax',
     ];
+
+    public function product1()
+    {
+        return $this->hasMany(Order::class, 'order_product_id1', 'product_id');
+    }
+
+    public function product2()
+    {
+        return $this->hasMany(Order::class, 'order_product_id2', 'product_id');
+    }
+
+    public function product3()
+    {
+        return $this->hasMany(Order::class, 'order_product_id3', 'product_id');
+    }
 }

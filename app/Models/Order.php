@@ -11,7 +11,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'order_customer_id',
         'order_product_id1',
         'order_num1',
         'order_product_id2',
@@ -22,4 +22,25 @@ class Order extends Model
     ];
 
     public $timestamps = false; // 無効
+
+    // 第二引数は子モデルの外部キー、第三引数は親モデルのキー
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'order_customer_id', 'customer_id');
+    }
+
+    public function product1()
+    {
+        return $this->belongsTo(Product::class, 'order_product_id1', 'product_id');
+    }
+
+    public function product2()
+    {
+        return $this->belongsTo(Product::class, 'order_product_id2', 'product_id');
+    }
+
+    public function product3()
+    {
+        return $this->belongsTo(Product::class, 'order_product_id3', 'product_id');
+    }
 }
