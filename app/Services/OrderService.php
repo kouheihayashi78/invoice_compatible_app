@@ -60,17 +60,22 @@ class OrderService implements OrderServiceInterface
     /**
      * オーダー検索
      * 顧客名、商品名で検索する
-     * 
+     *
      * @param string|null $search_str
      * @return AnonymousResourceCollection|null
      */
     public function search(string|null $search_str): ?AnonymousResourceCollection
     {
-        $result = $this->order->where('order_name', 'LIKE', '%'.$search_str.'%')
-            ->orWhere('order_code', 'LIKE', '%'.$search_str.'%')
-            ->orWhere('order_price', '=', $search_str)
-            ->orWhere('order_tax', '=', $search_str)
-            ->paginate(5);
-        return $result;
+        $result = $this->order::whereHas('customer', function($query) use ($search_str) {
+            $query->where('customer_name', 'LIKE', '%'.$search_str.'%');
+        })->orWhereHas('product1', function($query) use ($search_str){
+            $query->where('product_name', 'LIKE', '%'.$search_str.'%');
+        })->orWhereHas('product2', function($query) use ($search_str){
+            $query->where('product_name', 'LIKE', '%'.$search_str.'%');
+        })->orWhereHas('product3', function($query) use ($search_str){
+            $query->where('product_name', 'LIKE', '%'.$search_str.'%');
+        })->orderBy('order_id', 'asc')->paginate(5);
+
+        return OrderResource::collection($result);
     }
 }

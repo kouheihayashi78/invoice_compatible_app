@@ -23,7 +23,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $search_str = null;
-        if(empty($search_str)){
+        if(empty($request->input('search_str'))){
             $orders = $this->orderService->index();
             return Inertia::render('Orders/Index', compact('orders'));
         } else {
