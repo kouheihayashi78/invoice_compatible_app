@@ -4,19 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
-use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Services\OrderService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+    public $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = OrderResource::collection(order::paginate(5));
-        return Inertia::render('Orders/Index', compact('orders'));
+        $search_str = null;
+        if(empty($search_str)){
+            $orders = $this->orderService->index();
+            return Inertia::render('Orders/Index', compact('orders'));
+        } else {
+            $search_str = $request->input('search_str');
+            $orders = $this->orderService->search($search_str);
+            return Inertia::render('Orders/Index', compact('orders'));
+        }
     }
 
     /**
