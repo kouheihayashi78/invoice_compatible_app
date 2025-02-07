@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('order')->name('order.')->group(function () {
-        Route::get('/', [OrderController::class]);
+        Route::get('/', [OrderController::class, 'index'])->name('index');
     });
 });
 
