@@ -49,7 +49,7 @@ const search_go = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
                     <div class="mt-3 mb-3 ml-3 flex">
                         <!-- Linkタグを使うことでaタグと違ってページ全体を再読み込みせずにリンクを処理できる -->
-                        <Link :href="route('product.create')" :class="'flex justify-center items-center px-4 py-2 mr-3 bg-indigo-500 text-white border rounded-md font-semibold text-xs'" >
+                        <Link :href="route('order.create')" :class="'flex justify-center items-center px-4 py-2 mr-3 bg-indigo-500 text-white border rounded-md font-semibold text-xs'" >
                             <i class="fa-solid fa-plus-circle mr-1"></i> オーダー登録
                         </Link>
                         <div>
