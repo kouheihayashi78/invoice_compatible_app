@@ -1,8 +1,9 @@
 <?php
 namespace App\Services;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService implements ProductServiceInterface
@@ -84,5 +85,15 @@ class ProductService implements ProductServiceInterface
             ->orWhere('product_tax', '=', $search_str)
             ->paginate(5);
         return $result;
+    }
+
+    /**
+     * すべての商品取得
+     *
+     * @return AnonymousResourceCollection|null
+     */
+    public function allProducts(): ?AnonymousResourceCollection
+    {
+        return ProductResource::collection($this->product->all());
     }
 }

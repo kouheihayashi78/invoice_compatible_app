@@ -4,18 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\CustomerResource;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OrderController extends Controller
 {
     public $orderService;
+    public $productService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(
+        OrderService $orderService,
+        ProductService $productService
+    )
     {
         $this->orderService = $orderService;
+        $this->productService = $productService;
     }
     /**
      * Display a listing of the resource.
@@ -38,15 +46,20 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        // すべての商品取得
+        $products = $this->productService->allProducts();
+        // わざわざサービス作るのが面倒だったので、ここでカスタマーデータ取得処理記述
+        $customers = CustomerResource::collection(Customer::all());
+
+        return Inertia::render('Orders/Create', compact('products', 'customers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

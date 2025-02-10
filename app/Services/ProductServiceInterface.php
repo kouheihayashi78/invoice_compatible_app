@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use app\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductServiceInterface
@@ -44,5 +44,12 @@ interface ProductServiceInterface
      * @return LengthAwarePaginator|null
      */
     public function search(string|null $search_str): ?LengthAwarePaginator;
+
+    /**
+     * すべての商品取得
+     *
+     * @return AnonymousResourceCollection|null
+     */
+    public function allProducts(): ?AnonymousResourceCollection;
 
 }
