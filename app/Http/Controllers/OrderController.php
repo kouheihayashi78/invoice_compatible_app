@@ -50,13 +50,8 @@ class OrderController extends Controller
         $products = $this->productService->allProducts();
         // わざわざサービス作るのが面倒だったので、ここでカスタマーデータ取得処理記述
         $customers = CustomerResource::collection(Customer::all());
-        $searchResult = null;
-        if(!empty($request->input('search_str'))){
-            $search_str = $request->input('search_str');
-            $searchResult = $this->productService->searchProductName($search_str);
-        }
 
-        return Inertia::render('Orders/Create', compact('products', 'customers', 'searchResult'));
+        return Inertia::render('Orders/Create', compact('products', 'customers'));
     }
 
     /**

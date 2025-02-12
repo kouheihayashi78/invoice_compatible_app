@@ -96,17 +96,4 @@ class ProductService implements ProductServiceInterface
     {
         return ProductResource::collection($this->product->all());
     }
-
-    /**
-     * 商品名検索
-     *
-     * @param string|null $search_str
-     * @return AnonymousResourceCollection|null
-     */
-    public function searchProductName(string|null $search_str): ?AnonymousResourceCollection
-    {
-        $result = $this->product->where('product_name', 'LIKE', '%'.$search_str.'%')->orderBy('product_code', 'ASC')->get();
-        return ProductResource::collection($result);
-    }
-
 }

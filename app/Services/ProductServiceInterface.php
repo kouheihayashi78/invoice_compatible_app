@@ -51,12 +51,4 @@ interface ProductServiceInterface
      * @return AnonymousResourceCollection|null
      */
     public function allProducts(): ?AnonymousResourceCollection;
-
-    /**
-     * 商品検索
-     *
-     * @param string|null $search_str
-     * @return AnonymousResourceCollection|null
-     */
-    public function searchProductName(string|null $search_str): ?AnonymousResourceCollection;
 }
