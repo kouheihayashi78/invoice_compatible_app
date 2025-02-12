@@ -6,13 +6,22 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import TextInput from "@/Components/TextInput.vue";
+
+// Modalのために追加
+import SearchButton from '@/Components/SearchButton.vue';
+import Modal from '@/Components/Modal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const props = defineProps({
     products: {type:Object},
     customers: {type:Object}
 })
+
+// modalの初期化
+const confirmingUserDeletion = ref(false);
+const searchInput = ref(null);
 
 const form = useForm({
     customer_id: '',
@@ -22,6 +31,7 @@ const form = useForm({
     num1 : '',
     num2 : '',
     num3 : '',
+    search : '',
 });
 
 // 選択した商品の情報を取得する
@@ -34,6 +44,30 @@ const selectedProduct2 = computed(() => {
 const selectedProduct3 = computed(() => {
     return props.products.data.find((product) => product.id == form.product_id3)
 });
+
+// ここからModalの処理
+const confirmUserDeletion = () => {
+    confirmingUserDeletion.value = true;
+
+    nextTick(() => searchInput.value.focus());
+};
+
+const searchItem = () => {
+    form.get(route('order.index'), {
+        preserveScroll: true,
+        onSuccess: () => closeModal(),
+        onError: () => searchInput.value.focus(),
+        onFinish: () => form.reset(),
+    });
+};
+
+const closeModal = () => {
+    confirmingUserDeletion.value = false;
+
+    form.clearErrors();
+    form.reset();
+};
+// ここまでModalの処理
 
 const submit = () => {
     form.post(route("order.store"), {
@@ -135,6 +169,13 @@ const submit = () => {
                                 />
                             </div>
 
+                            <div v-else="selectedProduct1" class="ml-5 mt-7">
+                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                    検索
+                                </PrimaryButton>
+                            </div>
+
+
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.product_id1"
@@ -191,6 +232,13 @@ const submit = () => {
                                     :message="form.errors.num2"
                                 />
                             </div>
+
+                            <div v-else="selectedProduct2" class="ml-5 mt-7">
+                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                    検索
+                                </PrimaryButton>
+                            </div>
+
 
                             <InputError
                                 class="mt-2"
@@ -249,6 +297,13 @@ const submit = () => {
                                 />
                             </div>
 
+                            <div v-else="selectedProduct3" class="ml-5 mt-7">
+                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                    検索
+                                </PrimaryButton>
+                            </div>
+
+
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.product_id3"
@@ -272,5 +327,47 @@ const submit = () => {
                 </div>
             </div>
         </div>
+
+        <Modal :show="confirmingUserDeletion" @close="closeModal">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    商品検索
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600">
+                    文字列から商品を検索できます。
+                </p>
+
+                <div class="mt-6">
+                    <InputLabel for="search" value="Search" class="sr-only" />
+
+                    <TextInput
+                        id="search"
+                        ref="searchInput"
+                        v-model="form.search"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="文字を入力"
+                        @keyup.enter="searchItem"
+                    />
+
+                    <InputError :message="form.errors.search" class="mt-2" />
+
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+
+                    <SearchButton
+                        class="ms-3"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                        @click="searchItem"
+                    >
+                        検索
+                    </SearchButton>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
