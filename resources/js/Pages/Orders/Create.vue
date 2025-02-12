@@ -4,10 +4,11 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import TextInput from "@/Components/TextInput.vue";
+import { productNum1, productNum2, productNum3 } from "@/const/Product";
 
 // Modalのために追加
 import SearchButton from '@/Components/SearchButton.vue';
@@ -16,12 +17,14 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const props = defineProps({
     products: {type:Object},
-    customers: {type:Object}
+    customers: {type:Object},
+    searchResult: {type:Object}
 })
 
 // modalの初期化
 const confirmingUserDeletion = ref(false);
 const searchInput = ref(null);
+const selectProductNum = ref(null);
 
 const form = useForm({
     customer_id: '',
@@ -31,7 +34,7 @@ const form = useForm({
     num1 : '',
     num2 : '',
     num3 : '',
-    search : '',
+    search_str : '',
 });
 
 // 選択した商品の情報を取得する
@@ -46,16 +49,16 @@ const selectedProduct3 = computed(() => {
 });
 
 // ここからModalの処理
-const confirmUserDeletion = () => {
+const confirmUserDeletion = (number) => {
+    selectProductNum.value = number;
     confirmingUserDeletion.value = true;
 
     nextTick(() => searchInput.value.focus());
 };
 
 const searchItem = () => {
-    form.get(route('order.index'), {
+    form.get(route('order.create'), {
         preserveScroll: true,
-        onSuccess: () => closeModal(),
         onError: () => searchInput.value.focus(),
         onFinish: () => form.reset(),
     });
@@ -63,10 +66,29 @@ const searchItem = () => {
 
 const closeModal = () => {
     confirmingUserDeletion.value = false;
+    selectProductNum.value = '';
 
     form.clearErrors();
-    form.reset();
 };
+
+const getProduct = (product) => {
+
+    switch (selectProductNum.value) {
+        case productNum1:
+            form.product_id1 = product.id;
+            break;
+        case productNum2:
+            form.product_id2 = product.id;
+            break;
+        case productNum3:
+            form.product_id3 = product.id;
+            break;
+        default:
+            break;
+    }
+    closeModal()
+
+}
 // ここまでModalの処理
 
 const submit = () => {
@@ -170,7 +192,7 @@ const submit = () => {
                             </div>
 
                             <div v-else="selectedProduct1" class="ml-5 mt-7">
-                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                <PrimaryButton @click="confirmUserDeletion(productNum1)" class="px-4 py-2 text-white border rounded-md font-semibold text-xs">
                                     検索
                                 </PrimaryButton>
                             </div>
@@ -234,7 +256,7 @@ const submit = () => {
                             </div>
 
                             <div v-else="selectedProduct2" class="ml-5 mt-7">
-                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                <PrimaryButton @click="confirmUserDeletion(productNum2)" class="px-4 py-2 text-white border rounded-md font-semibold text-xs">
                                     検索
                                 </PrimaryButton>
                             </div>
@@ -298,7 +320,7 @@ const submit = () => {
                             </div>
 
                             <div v-else="selectedProduct3" class="ml-5 mt-7">
-                                <PrimaryButton @click="confirmUserDeletion" class="px-4 py-2 bg-gray-400 text-white border rounded-md font-semibold text-xs">
+                                <PrimaryButton @click="confirmUserDeletion(productNum3)" class="px-4 py-2 text-white border rounded-md font-semibold text-xs">
                                     検索
                                 </PrimaryButton>
                             </div>
@@ -344,7 +366,7 @@ const submit = () => {
                     <TextInput
                         id="search"
                         ref="searchInput"
-                        v-model="form.search"
+                        v-model="form.search_str"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="文字を入力"
@@ -353,6 +375,17 @@ const submit = () => {
 
                     <InputError :message="form.errors.search" class="mt-2" />
 
+                    <div v-if="searchResult" class="">
+                        <div v-for="product in searchResult.data" class="flex" @click="getProduct(product)">
+                            <span class="px-2 py-2 text-center">{{ product.name }}</span>
+                            <span class="px-2 py-2 text-center">{{ product.code }}</span>
+                            <span class="px-2 py-2 text-center">{{ product.price }}</span>
+                            <span class="px-2 py-2 text-center">{{ product.tax }}</span>
+                        </div>
+                    </div>
+                    <div v-else class="">
+                        検索結果がありません
+                    </div>
                 </div>
 
                 <div class="mt-6 flex justify-end">
