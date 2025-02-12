@@ -18,13 +18,13 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 const props = defineProps({
     products: {type:Object},
     customers: {type:Object},
-    searchResult: {type:Object}
 })
 
 // modalの初期化
 const confirmingUserDeletion = ref(false);
 const searchInput = ref(null);
 const selectProductNum = ref(null);
+const searchResult = ref([])
 
 const form = useForm({
     customer_id: '',
@@ -56,17 +56,28 @@ const confirmUserDeletion = (number) => {
     nextTick(() => searchInput.value.focus());
 };
 
+// もし検索バーに文字を入力すると、
 const searchItem = () => {
-    form.get(route('order.create'), {
-        preserveScroll: true,
-        onError: () => searchInput.value.focus(),
-        onFinish: () => form.reset(),
-    });
+    if(form.search_str.length > 0) {
+        const query = form.search_str
+        searchResult.value = props.products.data.filter(product => {
+            return product.name.includes(query)
+        })
+    }
+    // 下記はget通信で検索したデータを取得していたが、すでに商品は取得しており、かつモーダルの中で非同期的に商品のみを検索したいため、上記のfilterで検索をする
+    // form.get(route('order.create'), {
+    //     preserveScroll: true,
+    //     onError: () => searchInput.value.focus(),
+    //     onFinish: () => form.reset(),
+    // });
 };
 
 const closeModal = () => {
-    confirmingUserDeletion.value = false;
     selectProductNum.value = '';
+    confirmingUserDeletion.value = false;
+    searchInput.value = ''
+    searchResult.value = ''
+    form.search_str = ''
 
     form.clearErrors();
 };
@@ -370,13 +381,18 @@ const submit = () => {
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="文字を入力"
-                        @keyup.enter="searchItem"
+                        @input="searchItem"
                     />
 
                     <InputError :message="form.errors.search" class="mt-2" />
 
                     <div v-if="searchResult" class="">
-                        <div v-for="product in searchResult.data" class="flex" @click="getProduct(product)">
+                        <div
+                            v-for="product in searchResult"
+                            :key="product.id"
+                            class="flex cursor-pointer hover:bg-gray-200 p-2 transition"
+                            @click="getProduct(product)"
+                        >
                             <span class="px-2 py-2 text-center">{{ product.name }}</span>
                             <span class="px-2 py-2 text-center">{{ product.code }}</span>
                             <span class="px-2 py-2 text-center">{{ product.price }}</span>
