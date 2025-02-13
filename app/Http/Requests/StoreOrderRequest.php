@@ -22,13 +22,14 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' =>  ['required'],
-            'product_id1' =>  ['required'],
-            'product_id2' =>  [''],
-            'product_id3' =>  [''],
-            'num1' =>  ['required', 'integer'],
-            'num2' =>  [''],
-            'num3' =>  [''],
+            'customer_id' =>  ['required', 'integer', 'exists:customers,customer_id'],
+            'product_id1' =>  ['required', 'integer', 'exists:products,product_id'],
+            'num1' =>  ['required', 'integer', 'max:20', 'min:1'],
+            // 商品1以降は必須ではないが、それぞれの商品が選択されたら個数は必須にする
+            'product_id2' =>  ['nullable', 'integer', 'exists:products,product_id'],
+            'num2' =>  ['nullable', 'required_with:product_id2', 'integer', 'max:20', 'min:1'],
+            'product_id3' =>  ['nullable', 'integer', 'exists:products,product_id'],
+            'num3' =>  ['nullable', 'required_with:product_id3', 'integer', 'max:20', 'min:1'],
         ];
     }
 }

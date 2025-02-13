@@ -257,7 +257,6 @@ const submit = () => {
                                         type="number"
                                         class="w-full"
                                         autocomplete="num2"
-                                        required
                                     />
                                 </div>
                                 <InputError
@@ -321,7 +320,6 @@ const submit = () => {
                                         type="number"
                                         class="w-full"
                                         autocomplete="num3"
-                                        required
                                     />
                                 </div>
                                 <InputError
