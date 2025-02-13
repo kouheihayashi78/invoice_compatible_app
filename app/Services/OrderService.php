@@ -33,6 +33,19 @@ class OrderService implements OrderServiceInterface
      */
     public function create(array $orderInfo): void
     {
+        $order = new Order($orderInfo);
+        $order->fill(
+            [
+                'order_customer_id' => $orderInfo['customer_id'],
+                'order_product_id1' => $orderInfo['product_id1'],
+                'order_num1' => $orderInfo['num1'],
+                'order_product_id2' => $orderInfo['product_id2'],
+                'order_num2'=> $orderInfo['num2'],
+                'order_product_id3' => $orderInfo['product_id3'],
+                'order_num3' => $orderInfo['num3'],
+                'order_day' => date('Y-m-d H:i:s')
+            ]
+        )->save();
 
     }
 

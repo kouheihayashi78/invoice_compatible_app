@@ -59,7 +59,9 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        dd($request->all());
+        $data = $request->validated();
+        $this->orderService->create($data);
+        return redirect()->route('order.index')->with('success', 'オーダーの登録に成功しました。');
     }
 
     /**
