@@ -112,25 +112,25 @@ const search_go = () => {
                                     {{ order.num1 }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product2.name }}
+                                    {{ order.product2?.name }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product2.price }}
+                                    {{ order.product2?.price }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product2.tax }}%
+                                    {{ order.product2?.tax }}%
                                 </td>
                                 <td class="border-t border-b border-r border-gray-400 px-2 py-2 text-center">
                                     {{ order.num2 }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product3.name }}
+                                    {{ order.product3?.name }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product3.price }}
+                                    {{ order.product3?.price }}
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
-                                    {{ order.product3.tax }}%
+                                    {{ order.product3?.tax }}%
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
                                     {{ order.num3 }}
