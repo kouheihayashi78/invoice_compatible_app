@@ -104,7 +104,13 @@ const getProduct = (product) => {
 // ここまでModalの処理
 
 const submit = () => {
-    form.post(route("order.store"), {
+    if(!form.product_id2) {
+        form.num2 = null;
+    }
+    if(!form.product_id3) {
+        form.num3 = null;
+    }
+    form.put(route("order.update", props.order), {
         // onFinishだとバリデーション発生時もリセットされてしまうのでOnSuccess
         onSuccess: () => form.reset("customer_id", "product_id1", "product_id2", "product_id3", "num1", "num2", "num3"),
     });

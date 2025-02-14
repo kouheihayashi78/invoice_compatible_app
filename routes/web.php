@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [OrderController::class, 'create'])->name('create');
         Route::post('/store', [OrderController::class, 'store'])->name('store');
         Route::get('/edit/{order}', [OrderController::class, 'edit'])->name('edit');
+        Route::put('/update/{order}', [OrderController::class, 'update'])->name('update');
     });
 });
 
