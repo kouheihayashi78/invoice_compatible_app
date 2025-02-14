@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
             // Vue側で、「props.success」として受け取れる
             'success' => function () {
                 return session()->get('success');
+            },
+            'successDel' => function () {
+                return session()->get('successDel');
             }
         ]);
     }
