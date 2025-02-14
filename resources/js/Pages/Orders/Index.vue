@@ -135,7 +135,14 @@ const search_go = () => {
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
                                     {{ order.num3 }}
                                 </td>
-                                <td class="border border-gray-400 px-4 py-2 text-center"></td>
+                                <td class="border border-gray-400 px-4 py-2 text-center">
+                                    <Link
+                                    :href="route('order.edit',order.id)"
+                                    :class="'px-4 py-2 bg-yellow-400 text-white border rounded-md text-xs inline-block text-center'"
+                                    >
+                                        <i class="fa-solid fa-edit"></i>
+                                    </Link>
+                                </td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
                                     <DangerButton
                                         @click="
