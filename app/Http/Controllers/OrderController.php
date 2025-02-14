@@ -77,7 +77,10 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $products = $this->productService->allProducts();
+        $customers = CustomerResource::collection(Customer::all());
+
+        return Inertia::render('Orders/Edit', compact('order', 'products', 'customers'));
     }
 
     /**
