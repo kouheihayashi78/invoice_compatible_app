@@ -88,7 +88,8 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $this->orderService->update($order, $request->validated());
+        return redirect()->route('order.index')->with('success', 'オーダーの編集が完了しました。');
     }
 
     /**
