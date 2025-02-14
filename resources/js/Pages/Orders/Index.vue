@@ -4,15 +4,32 @@ import { Head } from '@inertiajs/vue3';
 import { Link,useForm } from '@inertiajs/vue3';
 import DangerButton from '@/Components/DangerButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps({
     orders: {type:Object},
     search_str: String,
     success: String,
+    successDel: String
 });
 
-const successMessage = ref(props.success)
+const successMessage = ref(null)
+const successDelMessage = ref(null)
+
+watchEffect(() => {
+    if (props.success) {
+        successMessage.value = props.success;
+        setTimeout(() => {
+            successMessage.value = null;
+        }, 3000);
+    }
+    if (props.successDel) {
+        successDelMessage.value = props.successDel;
+        setTimeout(() => {
+            successDelMessage.value = null;
+        }, 3000);
+    }
+});
 
 const form = useForm({
     id: '',
@@ -42,9 +59,15 @@ const search_go = () => {
             <div class="m-3 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- トーストメッセージ表示 -->
                 <transition name="fade">
-                        <div v-if="successMessage" class="alert alert-success m-2 mb-4 bg-green-100 p-3 rounded shadow-md">
-                            {{ successMessage }}
-                        </div>
+                    <div v-if="successMessage" class="alert alert-success m-2 mb-4 bg-green-100 p-3 rounded shadow-md">
+                        {{ successMessage }}
+                    </div>
+                </transition>
+
+                <transition name="fade">
+                    <div v-if="successDelMessage" class="alert alert-success m-2 mb-4 bg-red-100 p-3 rounded shadow-md">
+                        {{ successDelMessage }}
+                    </div>
                 </transition>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
                     <div class="mt-3 mb-3 ml-3 flex">
