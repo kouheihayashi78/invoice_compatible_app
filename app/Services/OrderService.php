@@ -78,6 +78,7 @@ class OrderService implements OrderServiceInterface
      */
     public function delete(Order $order): void
     {
+        $order->delete();
     }
 
     /**

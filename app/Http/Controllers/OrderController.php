@@ -97,6 +97,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $this->orderService->delete($order);
+        return redirect()->route('order.index')->with('successDel', 'オーダーの削除が完了しました。');
     }
 }
