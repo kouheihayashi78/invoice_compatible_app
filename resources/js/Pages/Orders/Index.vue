@@ -109,6 +109,7 @@ const search_go = () => {
                                 <th class="px-1 py-2 text-xs">注文数</th>
                                 <th class="px-4 py-2 border-l border-gray-400"></th>
                                 <th class="px-4 py-2"></th>
+                                <th class="px-4 py-2"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,6 +158,13 @@ const search_go = () => {
                                 </td>
                                 <td class="border-t border-b border-gray-400 px-2 py-2 text-center">
                                     {{ order.num3 }}
+                                </td>
+                                <td class="border border-gray-400 px-4 py-2 text-center">
+                                    <Link :href="route('order.show',order.id)"
+                                    :class="'px-4 py-2 bg-green-400 text-white border rounded-md text-xs inline-block text-center'"
+                                    >
+                                        <i class="fa-solid fa-info"></i>
+                                    </Link>
                                 </td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
                                     <Link
