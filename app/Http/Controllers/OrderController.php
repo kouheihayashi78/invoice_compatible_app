@@ -69,7 +69,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order = $this->orderService->show($order);
+        return Inertia::render('Orders/Show', compact('order'));
     }
 
     /**

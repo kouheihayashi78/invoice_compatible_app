@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Http\Resources\OrderResource;
 use app\Models\Order;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -12,6 +13,15 @@ interface OrderServiceInterface
      * @return AnonymousResourceCollection|null
      */
     public function index(): ?AnonymousResourceCollection;
+
+    /**
+     * オーダー詳細を取得
+     *
+     * @param Order $order
+     *
+     * @return OrderResource|null
+     */
+    public function show($order): ?OrderResource;
 
     /**
      * オーダー登録

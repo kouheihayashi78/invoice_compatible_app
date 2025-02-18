@@ -26,6 +26,19 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
+     * オーダー一覧を取得
+     *
+     * @param Order $order
+     *
+     * @return OrderResource|null
+     */
+    public function show($order): ?OrderResource
+    {
+        $result = new OrderResource($order);
+        return $result;
+    }
+
+    /**
      * オーダー登録
      *
      * @param array $orderInfo
