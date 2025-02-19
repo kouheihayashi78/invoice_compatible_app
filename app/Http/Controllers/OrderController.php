@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Services\OrderService;
 use App\Services\ProductService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -99,6 +100,29 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $this->orderService->delete($order);
+
         return redirect()->route('order.index')->with('successDel', 'オーダーの削除が完了しました。');
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function generatePdf(Order $order)
+    {
+        $orderResource = $this->orderService->show($order);
+        $pdf = PDF::loadView('orders.pdf', [
+            'order' => $order,
+            'normal_tax' => $orderResource->additional['normal_tax'],
+            'reduced_tax' => $orderResource->additional['reduced_tax'],
+            'total' => $orderResource->additional['total'],
+            'normal_tax_total' => $orderResource->additional['normal_tax_total'],
+            'reduced_tax_total' => $orderResource->additional['reduced_tax_total'],
+        ])
+        ->set_option('compress', 1)
+        ->setPaper('a4', 'portrait');
+        $fileName = '請求書.pdf';
+        
+        return $pdf->download($fileName);
+    }
+
 }
