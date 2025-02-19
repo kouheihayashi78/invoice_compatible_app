@@ -34,12 +34,11 @@ class OrderController extends Controller
         $search_str = null;
         if(empty($request->input('search_str'))){
             $orders = $this->orderService->index();
-            return Inertia::render('Orders/Index', compact('orders'));
         } else {
             $search_str = $request->input('search_str');
             $orders = $this->orderService->search($search_str);
-            return Inertia::render('Orders/Index', compact('orders'));
         }
+        return Inertia::render('Orders/Index', compact('orders', 'search_str'));
     }
 
     /**
@@ -68,10 +67,13 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order, Request $request)
     {
         $order = $this->orderService->show($order);
-        return Inertia::render('Orders/Show', compact('order'));
+        $page = $request->input('page');
+        $search_str = $request->input('search_str');
+
+        return Inertia::render('Orders/Show', compact('order', 'page', 'search_str'));
     }
 
     /**
@@ -121,7 +123,7 @@ class OrderController extends Controller
         ->set_option('compress', 1)
         ->setPaper('a4', 'portrait');
         $fileName = '請求書.pdf';
-        
+
         return $pdf->download($fileName);
     }
 

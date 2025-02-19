@@ -160,8 +160,13 @@ const search_go = () => {
                                     {{ order.num3 }}
                                 </td>
                                 <td class="border border-gray-400 px-4 py-2 text-center">
-                                    <Link :href="route('order.show',order.id)"
-                                    :class="'px-4 py-2 bg-green-400 text-white border rounded-md text-xs inline-block text-center'"
+                                    <Link
+                                        :href="route('order.show', {
+                                            order: order.id,
+                                            page: orders.meta.current_page,
+                                            search_str: form.search_str
+                                        })"
+                                        :class="'px-4 py-2 bg-green-400 text-white border rounded-md text-xs inline-block text-center'"
                                     >
                                         <i class="fa-solid fa-info"></i>
                                     </Link>

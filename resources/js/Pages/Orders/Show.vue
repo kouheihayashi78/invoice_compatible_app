@@ -6,6 +6,8 @@ import { Head, Link } from "@inertiajs/vue3";
 
 const props = defineProps({
     order: { type: Object },
+    page: '',
+    search_str: '',
 });
 
 const handleSubmit = () => {
@@ -27,7 +29,7 @@ const handleSubmit = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="mt-3 mb-3 flex">
                     <Link
-                        :href="route('order.index')"
+                        :href="route('order.index', { page: props.page, search_str: props.search_str })"
                         :class="'px-4 py-2 bg-indigo-500 text-white border rounded-md font-semibold text-xs'"
                     >
                         <i class="fa-solid fa-backward mr-2"></i>戻る
