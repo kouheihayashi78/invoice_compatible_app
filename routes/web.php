@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{order}', [OrderController::class, 'edit'])->name('edit');
         Route::put('/update/{order}', [OrderController::class, 'update'])->name('update');
         Route::delete('/delete/{order}', [OrderController::class, 'destroy'])->name('destroy');
+        Route::get('/{order}/pdf', [OrderController::class, 'generatePdf'])->name('pdf');
     });
 });
 

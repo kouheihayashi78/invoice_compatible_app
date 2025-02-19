@@ -7,6 +7,11 @@ import { Head, Link } from "@inertiajs/vue3";
 const props = defineProps({
     order: { type: Object },
 });
+
+const handleSubmit = () => {
+    const orderId = props.order.data.id
+    window.open(route('order.pdf', { order: orderId }));
+}
 </script>
 <template>
     <Head title="オーダー詳細" />
