@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 
 const props = defineProps({
     order: { type: Object },
@@ -20,16 +20,12 @@ const props = defineProps({
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">オーダー詳細</div>
-                </div>
-
-                <div class="mt-3 mb-3 ml-3 flex">
+                <div class="mt-3 mb-3 flex">
                     <Link
                         :href="route('order.index')"
                         :class="'px-4 py-2 bg-indigo-500 text-white border rounded-md font-semibold text-xs'"
                     >
-                        <i class="fa-solid fa-backward"></i> 戻る
+                        <i class="fa-solid fa-backward mr-2"></i>戻る
                     </Link>
                 </div>
 
@@ -56,14 +52,60 @@ const props = defineProps({
                         </div>
                     </div>
 
+                    <!--ここから小計-->
+                    <div class="mt-4 flex">
+                        <table class="table-auto border border-gray-400 w-10/12">
+                            <thead>
+                                <tr class="bg-blue-100">
+                                    <th class="px-4 py-2"></th>
+                                    <th class="px-4 py-2 text-xs">
+                                        お買い上げ額合計（円）
+                                    </th>
+                                    <th class="px-4 py-2 text-xs">
+                                        消費税額合計（円）
+                                    </th>
+                                    <th class="px-4 py-2 text-xs">
+                                        ご請求金額（円）
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white">
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        通常税率（10%）
+                                    </td>
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.normal_tax_total }}円
+                                    </td>
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.normal_tax }}円
+                                    </td>
+                                    <td class="border border-gray-400 px-4 py-2 text-center" rowspan="2">
+                                        {{ props.order.total }}円
+                                    </td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        軽減税率（ 8%）
+                                    </td>
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.reduced_tax_total }}円
+                                    </td>
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.reduced_tax }}円
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--ここまで小計-->
+
                     <!--ここから明細-->
                     <div class="mt-4">
                         <InputLabel for="" value="明細" />
                     </div>
                     <div class="mt-4 flex">
-                        <table
-                            class="table-auto border border-gray-400 w-10/12"
-                        >
+                        <table class="table-auto border border-gray-400 w-10/12">
                             <thead>
                                 <tr class="bg-blue-100">
                                     <th class="px-4 py-2">商品</th>
@@ -75,36 +117,20 @@ const props = defineProps({
                             </thead>
                             <tbody>
                                 <tr class="bg-white">
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product1.name }}
-                                        <span
-                                            v-if="
-                                                props.order.data.product1.tax ==
-                                                8
-                                            "
-                                            >※</span
-                                        >
+                                        <span v-if="props.order.data.product1.tax == 8">※</span>
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product1.code }}
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product1.price }}円
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
-                                        {{ props.order.data.product1.tax }}％
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.data.product1.tax }}%
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.num1 }}
                                     </td>
                                 </tr>
@@ -112,36 +138,20 @@ const props = defineProps({
                                     v-if="props.order.data.product2?.name"
                                     class="bg-white"
                                 >
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product2.name }}
-                                        <span
-                                            v-if="
-                                                props.order.data.product2.tax ==
-                                                8
-                                            "
-                                            >※</span
-                                        >
+                                        <span v-if="props.order.data.product2.tax == 8">※</span>
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product2.code }}
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product2.price }}円
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
-                                        {{ props.order.data.product2.tax }}％
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.data.product2.tax }}%
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.num2 }}
                                     </td>
                                 </tr>
@@ -149,36 +159,20 @@ const props = defineProps({
                                     v-if="props.order.data.product3?.name"
                                     class="bg-white"
                                 >
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product3.name }}
-                                        <span
-                                            v-if="
-                                                props.order.data.product3.tax ==
-                                                8
-                                            "
-                                            >※</span
-                                        >
+                                        <span v-if="props.order.data.product3.tax == 8">※</span>
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product3.code }}
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.product3.price }}円
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
-                                        {{ props.order.data.product3.tax }}％
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
+                                        {{ props.order.data.product3.tax }}%
                                     </td>
-                                    <td
-                                        class="border border-gray-400 px-4 py-2 text-center"
-                                    >
+                                    <td class="border border-gray-400 px-4 py-2 text-center">
                                         {{ props.order.data.num3 }}
                                     </td>
                                 </tr>
@@ -187,6 +181,12 @@ const props = defineProps({
                     </div>
                     <div>※軽減税率対象</div>
                     <!--ここまで明細-->
+
+                    <div class="flex items-center mt-8 mb-8">
+                        <PrimaryButton class="ms-4" @click="handleSubmit">
+                            請求書発行
+                        </PrimaryButton>
+                    </div>
                 </form>
             </div>
         </div>
