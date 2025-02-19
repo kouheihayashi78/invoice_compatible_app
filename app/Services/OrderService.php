@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class OrderService implements OrderServiceInterface
@@ -34,8 +35,29 @@ class OrderService implements OrderServiceInterface
      */
     public function show($order): ?OrderResource
     {
-        $result = new OrderResource($order);
-        return $result;
+        $orderResource = new OrderResource($order);
+
+        $normal_tax_total = 0;
+        $reduced_tax_total = 0;
+
+        // 商品ごとに計算処理
+        $this->calc($orderResource->product1, $normal_tax_total, $reduced_tax_total, $orderResource['order_num1']);
+        $this->calc($orderResource->product2, $normal_tax_total, $reduced_tax_total, $orderResource['order_num2']);
+        $this->calc($orderResource->product3, $normal_tax_total, $reduced_tax_total, $orderResource['order_num3']);
+
+        //税率計算
+        $normal_tax = (int)($normal_tax_total * 0.1);
+        $reduced_tax = (int)($reduced_tax_total * 0.08);
+        $total = $normal_tax_total + $reduced_tax_total + $normal_tax + $reduced_tax;
+
+        // 計算結果を OrderResource に追加
+        return $orderResource->additional([
+            'normal_tax' => $normal_tax,
+            'reduced_tax' => $reduced_tax,
+            'total' => $total,
+            'normal_tax_total' => $normal_tax_total,
+            'reduced_tax_total' => $reduced_tax_total,
+        ]);
     }
 
     /**
@@ -114,5 +136,26 @@ class OrderService implements OrderServiceInterface
         })->orderBy('order_id', 'asc')->paginate(5);
 
         return OrderResource::collection($result);
+    }
+
+    /**
+     * 商品の税率計算
+     *
+     * @param array|null $product
+     * @param int &$normal_tax_total
+     * @param int &$reduced_tax_total
+     * @param int $product_num
+     */
+    protected function calc(?Product $product, int &$normal_tax_total, int &$reduced_tax_total, int $product_num): void
+    {
+        if (!$product) {
+            return;
+        }
+
+        if ($product['product_tax'] === config('constants.TAX_RATE_NORMAL_PERCENT')) {
+            $normal_tax_total += $product['product_price'] * $product_num;
+        } elseif ($product['product_tax'] === config('constants.TAX_RATE_REDUCED_PERCENT')) {
+            $reduced_tax_total += $product['product_price'] * $$product_num;
+        }
     }
 }
